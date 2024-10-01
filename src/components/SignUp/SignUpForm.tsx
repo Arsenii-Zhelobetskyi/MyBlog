@@ -16,6 +16,8 @@ import { z } from 'zod';
 
 const formSchema = z
   .object({
+    firstName: z.string().min(2),
+    lastName: z.string().min(2),
     email: z.string().email(),
     password: z.string().min(6),
     repeatPassword: z.string().min(6),
@@ -27,10 +29,12 @@ const formSchema = z
 
 function SignUpForm() {
   const { signUp, isPending } = useSignUp();
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       repeatPassword: '',
@@ -38,11 +42,45 @@ function SignUpForm() {
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    signUp({ email: data.email, password: data.password });
+    signUp({ firstName: data.firstName, lastName:data.lastName, email: data.email, password: data.password });
   }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className='sm:flex max-sm:space-y-4  gap-2 '>
+          <div className="flex-grow">
+          <FormField
+            
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Albert" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+            </div>
+            <div className='flex-grow'>
+
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Einstein" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            />
+            </div>
+        </div>
         <FormField
           control={form.control}
           name="email"
@@ -66,7 +104,7 @@ function SignUpForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Pa$$w0rD!123" {...field} type='password' />
+                <Input placeholder="Pa$$w0rD!123" {...field} type="password" />
               </FormControl>
               <FormDescription>
                 Must be at least 6 characters long.
@@ -83,7 +121,11 @@ function SignUpForm() {
             <FormItem>
               <FormLabel>Repeat password</FormLabel>
               <FormControl>
-                <Input placeholder="Repeat your Pa$$w0rD!123" type='password' {...field} />
+                <Input
+                  placeholder="Repeat your Pa$$w0rD!123"
+                  type="password"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 Must repeat the password exactly.

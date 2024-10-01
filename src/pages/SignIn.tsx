@@ -1,5 +1,5 @@
-import { TypographyH1 } from '@/components/ui/TypographyH1';
 import SignInForm from '@/components/SignIn/SignInForm';
+import { TypographyH1 } from '@/components/ui/TypographyH1';
 function SignIn() {
   return (
     <div className="mx-auto max-w-md">

@@ -13,18 +13,27 @@ function AppLayout() {
   const { pathname } = location;
 
   useEffect(() => {
-    const restrictedPaths = ['sign-in', 'sign-up'];
+    const restrictedRegisteredPaths = ['sign-in', 'sign-up'];
+    const restrictedUnRegisteredPaths = ['my-profile'];
     const childPath = pathname.split('/').filter(Boolean).join('/');
 
+    console.log(user?.isAuthenticated, "test");
     if (
-      user?.isAuthenticated &&
-      restrictedPaths.includes(childPath)
+      user?.isAuthenticated===true &&
+      restrictedRegisteredPaths.includes(childPath)
     ) {
       navigate('/');
     }
-  }, [pathname, user, navigate, isPending]);
 
-  if (isPending) {
+    if (
+      user?.isAuthenticated ===false &&
+      restrictedUnRegisteredPaths.includes(childPath)
+    ) {
+      navigate('/');
+    }
+  }, [pathname, user, navigate]);
+
+  if (isPending || user?.isAuthenticated === undefined) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Spinner />

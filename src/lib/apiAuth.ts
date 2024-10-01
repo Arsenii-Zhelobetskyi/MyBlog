@@ -1,9 +1,13 @@
 import { supabase } from '@/lib/supabase';
 
 export async function signUp({
+  firstName,
+  lastName,
   email,
   password,
 }: {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }) {
@@ -12,6 +16,8 @@ export async function signUp({
     password,
     options: {
       data: {
+        firstName,
+        lastName,
         avatar: '',
       },
     },
@@ -26,23 +32,26 @@ export async function signIn({
   email: string;
   password: string;
 }) {
-  const {data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
   if (error) throw new Error(error.message);
   return data;
-
 }
 
 export async function getCurrentUser() {
-  const { data: session} = await supabase.auth.getSession();
+  const { data: session } = await supabase.auth.getSession();
 
-  if(!session) {
+  if (!session) {
     return null;
   }
-  const { data, error } = await supabase.auth.getUser()
+  const { data, error } = await supabase.auth.getUser();
   if (error) throw new Error(error.message);
 
-  return {user:data.user, isAuthenticated: data.user.role === "authenticated", isAdmin: data.user.user_metadata?.role==="admin"}; 
+  return {
+    user: data.user,
+    isAuthenticated: data.user.role === 'authenticated',
+    isAdmin: data.user.user_metadata?.role === 'admin',
+  };
 }

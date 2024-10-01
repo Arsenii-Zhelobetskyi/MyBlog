@@ -7,6 +7,7 @@ import Post from '@/pages/Post';
 import Editor from '@/pages/Editor';
 import SignIn from '@/pages/SignIn';
 import SignUp from '@/pages/SignUp';
+import MyProfile from '@/pages/MyProfile';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: '/sign-up',
         element: <SignUp />,
+      },
+      {
+        path: '/my-profile',
+        element: <MyProfile/>,
       },
     ],
   },
