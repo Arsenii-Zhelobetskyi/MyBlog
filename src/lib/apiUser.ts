@@ -4,27 +4,37 @@ export async function updateUserInfo({
   lastName,
   email,
   password,
+  avatarImage,
+  description,
 }: {
-  firstName: string | undefined;
-  lastName: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
   email?: string | undefined;
   password?: string | undefined;
+  avatarImage?: object | null;
+  description?: string | undefined;
 }) {
   let updateData;
-updateData = { data: {} };
+  updateData = { data: {} };
 
-if (firstName) {
+  if (firstName) {
     updateData.data = {
-        ...updateData.data,
-        firstName,
+      ...updateData.data,
+      firstName,
     };
-}
-if (lastName) {
+  }
+  if (lastName) {
     updateData.data = {
-        ...updateData.data,
-        lastName,
+      ...updateData.data,
+      lastName,
     };
-}
+  }
+  if (description!==undefined) {
+    updateData.data = {
+      ...updateData.data,
+      description,
+    };
+  }
   if (email) {
     updateData = {
       ...updateData,
@@ -39,8 +49,24 @@ if (lastName) {
   }
   const { data, error } = await supabase.auth.updateUser(updateData);
   if (error) {
-    console.log(error);
-    throw new Error('User info could not be updated');
+    throw new Error(error.message);
   }
-  return data;
+  if (!avatarImage) return data;
+
+  const fileName = `avatar-${data.user.id}-${Math.random()}`;
+
+  const { error: storageError } = await supabase.storage
+    .from('avatars')
+    .upload(fileName, avatarImage);
+  if (storageError) throw new Error(storageError.message);
+
+  // 3. Update avatar in the user
+  const { data: updatedUser, error: avatarError } =
+    await supabase.auth.updateUser({
+      data: {
+        avatar: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/avatars/${fileName}`,
+      },
+    });
+  if (avatarError) throw new Error(avatarError.message);
+  return updatedUser;
 }
