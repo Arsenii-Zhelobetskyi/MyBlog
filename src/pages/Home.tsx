@@ -1,11 +1,12 @@
 import Posts from '@/components/Posts/Posts';
+import { TypographyH1 } from '@/components/ui/TypographyH1';
 function Home() {
   return (
     <div className="mx-auto max-w-7xl">
       <div className="flex flex-col gap-10">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        <TypographyH1>
           All posts:
-        </h1>
+        </TypographyH1>
         <Posts />
       </div>
     </div>

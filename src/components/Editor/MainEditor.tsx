@@ -9,16 +9,17 @@ function MainEditor() {
   const { createPost, isCreating } = useCreatePost();
   const [title, setTitle] = useState('');
   const content = postStore((state) => state.content);
-
   function handleRofl() {
     createPost({ title, content });
   }
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-11">
-      <div className='flex justify-center'>
+      <div className="flex justify-center">
         <Button
           className="max-w-20"
-          disabled={Number(content?.content.length) === 1 || !title || isCreating}
+          disabled={
+            Number(content?.content.length) === 1 || !title || isCreating
+          }
           onClick={handleRofl}
         >
           Post

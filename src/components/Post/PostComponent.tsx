@@ -1,15 +1,13 @@
 import { usePost } from '@/components/Post/usePost';
 import { useEffect, useState } from 'react';
 import { generateHTML } from '@tiptap/core';
-import Document from '@tiptap/extension-document';
-import Paragraph from '@tiptap/extension-paragraph';
-import Text from '@tiptap/extension-text';
-import Bold from '@tiptap/extension-bold';
-import Italic from '@tiptap/extension-italic';
-import Strike from '@tiptap/extension-strike';
-import HardBreak from '@tiptap/extension-hard-break';
+import StarterKit from '@tiptap/starter-kit';
+import { TypographyH1 } from '@/components/ui/TypographyH1';
+import Spinner from '@/components/ui/Spinner';
 
-const extensions = [Document, Paragraph, Text, Bold, Italic, Strike, HardBreak];
+import Underline from '@tiptap/extension-underline';
+import { cn } from '@/lib/utils';
+const extensions = [StarterKit, Underline];
 
 function PostComponent() {
   const { isPending, post } = usePost();
@@ -22,10 +20,26 @@ function PostComponent() {
   }, [post]);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center">
+        <Spinner />
+      </div>
+    );
   }
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div className="flex flex-col gap-11">
+      <TypographyH1>{post.title}</TypographyH1>
+      <div>
+        <div
+          className={cn(
+            'prose max-w-none [&_ol]:list-decimal [&_ul]:list-disc',
+          )}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default PostComponent;
