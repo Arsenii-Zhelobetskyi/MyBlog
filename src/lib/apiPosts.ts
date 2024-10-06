@@ -1,5 +1,4 @@
 import { supabase } from '@/lib/supabase';
-import { clear } from 'console';
 
 export async function getPost(id: string | undefined) {
   const { data, error } = await supabase
@@ -14,8 +13,19 @@ export async function getPost(id: string | undefined) {
   return data;
 }
 
-export async function getPosts() {
-  const { data, error } = await supabase.from('posts').select();
+export async function getPosts(
+  sortBy?: { field: string; sortType: string },
+  pageSize: number,
+) {
+  const { field, sortType } = sortBy || { field: '', sortType: '' };
+
+  let query = supabase.from('posts').select().limit(pageSize);
+
+  if (field) {
+    query = query.order(field, { ascending: sortType === 'asc' });
+  }
+
+  const { data, error } = await query;
   if (error) {
     console.log(error);
     throw new Error('Posts could not be fetched');
