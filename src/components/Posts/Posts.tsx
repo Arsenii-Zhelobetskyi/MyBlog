@@ -5,12 +5,14 @@ function Posts({
   sortBy,
   pageSize,
   searchQuery,
+  filterQuery,
 }: {
   sortBy?: { field: string; sortType: string };
   pageSize: number;
   searchQuery?: { searchField: string; searchValue: string };
+  filterQuery?: { filterField: string; filterValue: string };
 }) {
-  const { isPending, posts } = usePosts( pageSize,sortBy,searchQuery);
+  const { isPending, posts } = usePosts( pageSize,sortBy,searchQuery,filterQuery);
   if (isPending) {
     return (
       <div className="flex justify-center">

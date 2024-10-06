@@ -17,19 +17,30 @@ export async function getPosts(
   pageSize: number,
   sortBy?: { field: string; sortType: string },
   searchQuery?: { searchField: string; searchValue: string },
+  filterQuery?: { filterField: string; filterValue: string },
 ) {
   const { field, sortType } = sortBy || { field: '', sortType: '' };
-  const { searchField, searchValue } = searchQuery || { searchField: '', searchValue: '' };
+  const { searchField, searchValue } = searchQuery || {
+    searchField: '',
+    searchValue: '',
+  };
+  const { filterField, filterValue } = filterQuery || {
+    filterField: '',
+    filterValue: '',
+  };
 
   let query = supabase.from('posts').select().limit(pageSize);
 
   if (field) {
     query = query.order(field, { ascending: sortType === 'asc' });
   }
-  if(searchField){
+  if (searchValue) {
     query = query.eq(searchField, searchValue);
   }
 
+  if (filterValue) {
+    query = query.eq(filterField, filterValue);
+  }
   const { data, error } = await query;
   if (error) {
     console.log(error);

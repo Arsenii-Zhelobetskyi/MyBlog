@@ -5,6 +5,7 @@ export function usePosts(
   pageSize: number,
   sortBy?: { field: string; sortType: string },
   searchQuery?: { searchField: string; searchValue: string },
+  filterQuery?: { filterField: string; filterValue: string },
 ) {
   const {
     isPending,
@@ -15,10 +16,15 @@ export function usePosts(
       'posts',
       ...(sortBy?.field ? [sortBy.field] : []),
       ...(sortBy?.sortType ? [sortBy.sortType] : []),
-      ...(searchQuery?.searchValue ? [`user-${searchQuery?.searchValue}`] : []),
+      ...(searchQuery?.searchValue
+        ? [`search-${searchQuery?.searchValue}`]
+        : []),
+      ...(filterQuery?.filterField
+        ? [`filter-${filterQuery?.filterValue}`]
+        : []),
       pageSize,
     ],
-    queryFn: () => getPosts(pageSize, sortBy, searchQuery),
+    queryFn: () => getPosts(pageSize, sortBy, searchQuery,filterQuery),
   });
   return { isPending, posts, error };
 }
