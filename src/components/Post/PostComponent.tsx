@@ -29,7 +29,16 @@ function PostComponent() {
 
   return (
     <div className="flex flex-col gap-11">
-      <TypographyH1>{post.title}</TypographyH1>
+      {post.cover && (
+        <div className="absolute inset-0 top-20 -z-10">
+          <img
+            className="max-h-80 w-full object-cover"
+            src={post.cover}
+            alt="cover"
+          />
+        </div>
+      )}
+      <TypographyH1 className={`${post.cover? "mt-80":""}`}>{post.title}</TypographyH1>
       <div>
         <div
           className={cn(

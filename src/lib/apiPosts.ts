@@ -1,28 +1,58 @@
-import { supabase } from "@/lib/supabase";
-export async function getPost(id:string | undefined){
-    const {data,error} = await supabase.from('posts').select().eq('id',id).single();
-    if (error){
-        console.log(error)
-        throw new Error("Post could not be fetched");
-    }
-    return data;
+import { supabase } from '@/lib/supabase';
+import { clear } from 'console';
+
+export async function getPost(id: string | undefined) {
+  const { data, error } = await supabase
+    .from('posts')
+    .select()
+    .eq('id', id)
+    .single();
+  if (error) {
+    console.log(error);
+    throw new Error('Post could not be fetched');
+  }
+  return data;
 }
 
-export async function getPosts(){
-    const {data,error} = await supabase.from('posts').select();
-    if (error){
-        console.log(error)
-        throw new Error("Posts could not be fetched");
-    }
-    return data;
+export async function getPosts() {
+  const { data, error } = await supabase.from('posts').select();
+  if (error) {
+    console.log(error);
+    throw new Error('Posts could not be fetched');
+  }
+  return data;
 }
 
+export async function createPost({
+  title,
+  content,
+  cover,
+}: {
+  title: string;
+  content: {};
+  cover: File | null;
+}) {
+  const post = { title, content };
+  const { data, error } = await supabase.from('posts').insert(post).select();
+  if (error) {
+    throw new Error(error.message);
+  }
+  if (!cover) return data;
 
-export async function createPost(post: { title: string; content: {}}){
-    const {error} = await supabase.from('posts').insert([post]);
+  const id = data[0].id;
 
-    if (error){
-        console.log(error)
-        throw new Error("Post could not be created");
-    }
+  const fileName = `cover-${id}-${Math.random()}`;
+  const { error: storageError } = await supabase.storage
+    .from('covers')
+    .upload(fileName, cover);
+  if (storageError) throw new Error(storageError.message);
+
+  const { data: updatedPost, error: coverError } = await supabase
+    .from('posts')
+    .update({
+      cover: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/covers/${fileName}`,
+    })
+    .eq('id', id);
+  if (coverError) throw new Error(coverError.message);
+  return updatedPost;
 }
