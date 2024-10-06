@@ -14,15 +14,20 @@ export async function getPost(id: string | undefined) {
 }
 
 export async function getPosts(
-  sortBy?: { field: string; sortType: string },
   pageSize: number,
+  sortBy?: { field: string; sortType: string },
+  searchQuery?: { searchField: string; searchValue: string },
 ) {
   const { field, sortType } = sortBy || { field: '', sortType: '' };
+  const { searchField, searchValue } = searchQuery || { searchField: '', searchValue: '' };
 
   let query = supabase.from('posts').select().limit(pageSize);
 
   if (field) {
     query = query.order(field, { ascending: sortType === 'asc' });
+  }
+  if(searchField){
+    query = query.eq(searchField, searchValue);
   }
 
   const { data, error } = await query;
@@ -37,12 +42,14 @@ export async function createPost({
   title,
   content,
   cover,
+  created_by,
 }: {
   title: string;
   content: {};
   cover: File | null;
+  created_by: string;
 }) {
-  const post = { title, content };
+  const post = { title, content, created_by };
   const { data, error } = await supabase.from('posts').insert(post).select();
   if (error) {
     throw new Error(error.message);

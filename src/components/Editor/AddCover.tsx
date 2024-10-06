@@ -1,3 +1,5 @@
+import { Image } from 'lucide-react';
+
 import {
   Dialog,
   DialogClose,
@@ -22,7 +24,10 @@ function AddCover() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost">Add cover</Button>
+        <Button variant="ghost">
+          <Image className="mr-2 h-4 w-4" />
+          Add cover
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -45,7 +50,10 @@ function AddCover() {
               Close
             </Button>
           </DialogClose>
-          <Button>Submit</Button>
+
+          <DialogClose asChild>
+            <Button>Submit</Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,7 +1,7 @@
-import MainEditor from '@/components/Editor/MainEditor';
+import MyEditor from '@/components/Editor/MyEditor';
 
 function Editor() {
-  return <MainEditor />;
+  return <MyEditor />;
 }
 
 export default Editor;

@@ -26,14 +26,14 @@ function PostCard({
   return (
     <div className="flex justify-center">
       <Card
-        className="min-h-96 w-[310px] cursor-pointer bg-background transition-colors hover:bg-accent hover:text-accent-foreground"
+        className="min-h-80 w-72 cursor-pointer bg-background transition-colors hover:bg-accent hover:text-accent-foreground"
         key={post.id}
         onClick={() => navigate(`/post/${post.id}`)}
       >
         <CardHeader>
           <img
             src={post.cover ? post.cover : imagePlaceholder}
-            className="h-56 w-full rounded-md object-cover"
+            className="h-52 w-full rounded-md object-cover"
           />
         </CardHeader>
         <CardContent className="flex flex-col gap-2">

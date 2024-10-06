@@ -8,11 +8,14 @@ import Editor from '@/pages/Editor';
 import SignIn from '@/pages/SignIn';
 import SignUp from '@/pages/SignUp';
 import MyProfile from '@/pages/MyProfile';
+import NotFound from '@/pages/NotFound';
+import Search from '@/pages/Search';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '/',
@@ -30,7 +33,6 @@ const router = createBrowserRouter([
       {
         path: '/sign-in',
         element: <SignIn />,
-  
       },
       {
         path: '/sign-up',
@@ -38,7 +40,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/my-profile',
-        element: <MyProfile/>,
+        element: <MyProfile />,
+      },
+      {
+        path: '/search',
+        element: <Search />,
       },
     ],
   },

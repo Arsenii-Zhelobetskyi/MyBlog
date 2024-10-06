@@ -8,9 +8,9 @@ import { TypographyP } from '@/components/ui/TypographyP';
 function MyProfileComponent() {
   const { user, avatar } = useUser();
   return (
-    <>
+    <div className="flex flex-col items-center justify-center gap-4">
       <div>
-        <Avatar className="sm:h-20 sm:w-20">
+        <Avatar className="h-20 w-20">
           <AvatarImage
             src={avatar.avatarImage}
             className="object-cover"
@@ -30,9 +30,9 @@ function MyProfileComponent() {
           {user?.user?.user_metadata?.description}
         </TypographyP>
       )}
-      <Separator />
       <UpdateSettings />
-    </>
+      <Separator />
+    </div>
   );
 }
 

@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { getPosts } from '@/lib/apiPosts';
 
 export function usePosts(
-  sortBy?: { field: string; sortType: string },
   pageSize: number,
+  sortBy?: { field: string; sortType: string },
+  searchQuery?: { searchField: string; searchValue: string },
 ) {
   const {
     isPending,
@@ -14,9 +15,10 @@ export function usePosts(
       'posts',
       ...(sortBy?.field ? [sortBy.field] : []),
       ...(sortBy?.sortType ? [sortBy.sortType] : []),
-      pageSize
+      ...(searchQuery?.searchValue ? [`user-${searchQuery?.searchValue}`] : []),
+      pageSize,
     ],
-    queryFn: () => getPosts(sortBy,pageSize),
+    queryFn: () => getPosts(pageSize, sortBy, searchQuery),
   });
   return { isPending, posts, error };
 }

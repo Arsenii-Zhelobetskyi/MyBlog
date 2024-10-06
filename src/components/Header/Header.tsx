@@ -7,10 +7,9 @@ import { useNavigate } from 'react-router-dom';
 function Header() {
   const navigate = useNavigate();
   const { user, avatar } = useUser();
-  console.log(user);
   // const { avatar, isAuthenticated } = useGetUser();
   return (
-    <header className="px-8 py-5">
+    <header className="px-8 py-2 fixed right-0 left-0 backdrop-blur-sm z-50">
       {/* LOGO  */}
       <div className="mx-auto flex max-w-7xl justify-between">
         <Navigation />
