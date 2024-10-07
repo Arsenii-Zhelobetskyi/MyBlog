@@ -98,7 +98,6 @@ export async function deleteUser(id: { id: string }) {
   //   console.log(errorE.message);
   // }
   // if (error) {
-
   //   console.log(error.message);
   //   throw new Error(error.message);
   // }

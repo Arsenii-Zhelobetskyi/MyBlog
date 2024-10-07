@@ -43,6 +43,9 @@ function AddCover() {
               accept="image/*"
             />
           </div>
+          <DialogClose asChild>
+            <Button onClick={()=>setCover('')}>Clear</Button>
+          </DialogClose>
         </div>
         <DialogFooter className="max-sm:gap-4 sm:justify-between">
           <DialogClose asChild>

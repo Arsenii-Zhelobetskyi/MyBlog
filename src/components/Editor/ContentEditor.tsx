@@ -12,7 +12,7 @@ import renderItems from './SlashCommand/renderItems.jsx';
 import { cn } from '@/lib/utils';
 
 import postStore from '@/store/postStore.js';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const extensions = [
   StarterKit.configure({
@@ -35,7 +35,9 @@ const extensions = [
 ];
 
 const ContentEditor = () => {
+  const content = postStore((state) => state.content);
   const setContent = postStore((state) => state.setContent);
+  
   const editor = useEditor({
     extensions,
     editorProps: {
@@ -43,6 +45,7 @@ const ContentEditor = () => {
         class: cn('prose max-w-none [&_ol]:list-decimal [&_ul]:list-disc'),
       },
     },
+    content: content.content.length ? content : undefined,
   });
 
   useEffect(() => {
@@ -52,6 +55,7 @@ const ContentEditor = () => {
     setContent,
     editor?.storage.characterCount.characters({ mode: 'nodeSize' }),
   ]);
+
 
   return (
     <div className="flex-1">

@@ -57,7 +57,7 @@ export async function createPost({
 }: {
   title: string;
   content: {};
-  cover: File | null;
+  cover: File | string | null;
   created_by: string;
 }) {
   const post = { title, content, created_by };
@@ -83,4 +83,57 @@ export async function createPost({
     .eq('id', id);
   if (coverError) throw new Error(coverError.message);
   return updatedPost;
+}
+
+export async function updatePost({
+  id,
+  title,
+  content,
+  cover,
+  created_by,
+}: {
+  id: number | null;
+  title: string;
+  content: {};
+  cover: File | string | null;
+  created_by: string;
+}) {
+  const post = { title, content, created_by, status: 'on moderation' };
+
+  const { data, error } = await supabase
+    .from('posts')
+    .update(post)
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) {
+    throw new Error(error.message);
+  }
+  if (!cover) return data;
+  if (cover === data.cover) return data;
+
+
+  const fileUrl = await uploadImage('cover', id, cover);
+
+  const { data: updatedPost, error: coverUpdateError } = await supabase
+    .from('posts')
+    .update({
+      cover: fileUrl,
+    })
+    .eq('id', id);
+  if (coverUpdateError) throw new Error(coverUpdateError.message);
+  return updatedPost;
+}
+
+export async function uploadImage(
+  name: string,
+  id: number | null,
+  image: File,
+) {
+  const fileName = `${name}-${id}-${Math.random()}`;
+  const { error: storageError } = await supabase.storage
+    .from(`${name}s`)
+    .upload(fileName, image);
+  if (storageError) throw new Error(storageError.message);
+  return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${name}s/${fileName}`;
 }

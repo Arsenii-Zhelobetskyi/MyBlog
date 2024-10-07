@@ -16,6 +16,7 @@ export async function signUp({
     password,
     options: {
       data: {
+        role:'admin',
         firstName,
         lastName,
         avatar: '',

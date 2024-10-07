@@ -17,7 +17,6 @@ function AppLayout() {
     const restrictedUnRegisteredPaths = ['my-profile'];
     const childPath = pathname.split('/').filter(Boolean).join('/');
 
-    console.log(user?.isAuthenticated, "test");
     if (
       user?.isAuthenticated===true &&
       restrictedRegisteredPaths.includes(childPath)

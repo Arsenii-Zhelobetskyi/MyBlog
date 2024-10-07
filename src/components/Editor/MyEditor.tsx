@@ -1,42 +1,27 @@
 import ContentEditor from '@/components/Editor/ContentEditor';
-import { Button } from '@/components/ui/button';
 
-import { useCreatePost } from '@/components/Editor/useCreatePost';
-import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import postStore from '@/store/postStore.js';
 import AddCover from '@/components/Editor/AddCover';
-import { useUser } from '@/components/SignIn/useUser';
+import { Input } from '@/components/ui/input';
+import postStore from '@/store/postStore.js';
 function MyEditor() {
-  const { createPost, isCreating } = useCreatePost();
-  const [title, setTitle] = useState('');
+  const title = postStore((state) => state.title);
+  const setTitle = postStore((state) => state.setTitle);
   const content = postStore((state) => state.content);
   const cover = postStore((state) => state.cover);
-  const { user } = useUser();
-  function handleSubmit() {
+  const reset = postStore((state) => state.reset);
 
-    createPost({ title, content, cover, created_by: user?.user.id });
-  }
   return (
     <div className="mx-auto flex max-w-3xl flex-col">
       {cover && (
         <div className="absolute inset-0 top-20 -z-10">
           <img
             className="max-h-80 w-full object-cover"
-            src={URL.createObjectURL(cover)}
+            src={cover instanceof File ? URL.createObjectURL(cover) : cover}
             alt="cover"
           />
         </div>
       )}
       <div className={`flex ${cover ? 'mt-80' : ''}`}>
-        <Button
-          disabled={
-            Number(content?.content.length) === 1 || !title || isCreating
-          }
-          onClick={handleSubmit}
-        >
-          Post
-        </Button>
         <AddCover />
       </div>
 

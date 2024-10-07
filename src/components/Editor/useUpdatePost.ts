@@ -1,19 +1,21 @@
+
+
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
-import { createPost as createPostFunc } from '@/lib/apiPosts';
+import { updatePost as updatePostFunc } from '@/lib/apiPosts';
 
-export function useCreatePost() {
+export function useUpdatePost() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { mutate: createPost, isPending: isCreating } = useMutation({
-    mutationFn: createPostFunc,
+  const { mutate: updatePost, isPending: isUpdating } = useMutation({
+    mutationFn: updatePostFunc,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['posts'],
       });
       toast({
-        title: 'Post created!',
+        title: 'Post updated!',
         description: 'Admin will review your post soon.',
       });
     },
@@ -24,5 +26,5 @@ export function useCreatePost() {
         description: error.message,
       }),
   });
-  return { createPost, isCreating };
+  return { updatePost, isUpdating };
 }

@@ -1,17 +1,30 @@
 import { usePost } from '@/components/Post/usePost';
-import { useEffect, useState } from 'react';
+import Spinner from '@/components/ui/Spinner';
+import { TypographyH1 } from '@/components/ui/TypographyH1';
 import { generateHTML } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import { TypographyH1 } from '@/components/ui/TypographyH1';
-import Spinner from '@/components/ui/Spinner';
+import { useEffect, useState } from 'react';
 
-import Underline from '@tiptap/extension-underline';
+import { useUser } from '@/components/SignIn/useUser';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import Underline from '@tiptap/extension-underline';
+import { NotebookPen, Siren, Trash2 } from 'lucide-react';
+
+import { useNavigate } from 'react-router-dom';
+import postStore from '@/store/postStore.ts';
 const extensions = [StarterKit, Underline];
 
 function PostComponent() {
   const { isPending, post } = usePost();
   const [html, setHtml] = useState('');
+  const navigate = useNavigate();
+  const cover = postStore((state) => state.cover);
+  const setId = postStore((state) => state.setId);
+  const setCover = postStore((state) => state.setCover);
+  const setTitle = postStore((state) => state.setTitle);
+  const setContent = postStore((state) => state.setContent);
+  const { user } = useUser();
 
   useEffect(() => {
     if (post) {
@@ -27,6 +40,15 @@ function PostComponent() {
     );
   }
 
+  function handleEdit() {
+    setId(post.id);
+    setTitle(post.title);
+    setContent(post.content);
+    setCover(post.cover === null ? '' : post.cover);
+    navigate('/editor');
+  }
+  function handleDecline() {}
+
   return (
     <div className="flex flex-col gap-11">
       {post.cover && (
@@ -38,7 +60,25 @@ function PostComponent() {
           />
         </div>
       )}
-      <TypographyH1 className={`${post.cover? "mt-80":""}`}>{post.title}</TypographyH1>
+      <div className={`${post.cover ? 'mt-80' : ''}`}>
+        <div
+          className={`${user?.user.id === post.created_by || user?.isAdmin ? '' : 'hidden'} flex gap-2`}
+        >
+          <Button variant="ghost" onClick={handleDecline}>
+            <Siren className="mr-2 h-4 w-4" />
+            Decline this post
+          </Button>
+          <Button variant="ghost" onClick={handleEdit}>
+            <NotebookPen className="mr-2 h-4 w-4" />
+            Edit this post
+          </Button>
+          <Button variant="ghost">
+            <Trash2 className="mr-2 h-4 w-4" />
+            delete this post
+          </Button>
+        </div>
+        <TypographyH1>{post.title}</TypographyH1>
+      </div>
       <div>
         <div
           className={cn(

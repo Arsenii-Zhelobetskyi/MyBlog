@@ -37,7 +37,7 @@ function PostCard({
           />
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
-          <CardTitle className="border-none">{post.title}</CardTitle>
+          <CardTitle className="border-none break-words">{post.title}</CardTitle>
           <p className="break-words text-sm font-medium leading-none">
             small desc
           </p>
