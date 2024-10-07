@@ -27,7 +27,7 @@ function DeleteAccount() {
             account.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="max-sm:gap-4 sm:justify-start">
+        <DialogFooter className="max-sm:gap-4 sm:justify-between">
           <DialogClose asChild>
             <Button type="button" variant="secondary">
               No
@@ -36,7 +36,7 @@ function DeleteAccount() {
           <DialogClose asChild>
             <Button
               type="button"
-              onClick={() => deleteUser(user.user.id)}
+              onClick={() => deleteUser(user?.user.id)}
               variant="destructive"
             >
               Yes

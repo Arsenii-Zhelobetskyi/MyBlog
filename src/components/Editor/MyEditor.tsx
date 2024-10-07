@@ -28,7 +28,7 @@ function MyEditor() {
       <Input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="mb-11 h-full scroll-m-20 rounded-none border-none pl-0 text-4xl font-bold focus-visible:ring-0 lg:text-5xl"
+        className="mb-11 h-full scroll-m-20 rounded-none border-none pl-0 text-4xl font-extrabold focus-visible:ring-0 lg:text-5xl"
         placeholder="Your title"
       />
       <ContentEditor />

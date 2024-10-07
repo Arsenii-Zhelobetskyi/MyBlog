@@ -8,11 +8,11 @@ export function useUpdatePost() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { mutate: updatePost, isPending: isUpdating } = useMutation({
+  const { mutate: updatePost, isPending: isUpdating, isSuccess } = useMutation({
     mutationFn: updatePostFunc,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['posts'],
+        queryKey: ['post'],
       });
       toast({
         title: 'Post updated!',
@@ -26,5 +26,5 @@ export function useUpdatePost() {
         description: error.message,
       }),
   });
-  return { updatePost, isUpdating };
+  return { updatePost, isUpdating, isSuccess };
 }

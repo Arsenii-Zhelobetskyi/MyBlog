@@ -2,13 +2,12 @@ import Navigation from '@/components/Header/Navigation';
 import { useUser } from '@/components/SignIn/useUser';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { Pencil } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useCreatePost } from '@/components/Editor/useCreatePost';
-import postStore from '@/store/postStore.js';
-import { updatePost } from '@/lib/apiPosts';
 import { useUpdatePost } from '@/components/Editor/useUpdatePost';
+import postStore from '@/store/postStore.js';
 function Header() {
   const { user, avatar } = useUser();
   const { createPost, isCreating } = useCreatePost();

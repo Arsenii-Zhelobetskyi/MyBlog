@@ -91,14 +91,18 @@ export async function updatePost({
   content,
   cover,
   created_by,
+  status = 'on moderation',
+  status_reason = '',
 }: {
   id: number | null;
-  title: string;
-  content: {};
-  cover: File | string | null;
-  created_by: string;
+  title?: string;
+  content?: {};
+  cover?: File | string | null;
+  created_by?: string;
+  status?: string;
+  status_reason?: string;
 }) {
-  const post = { title, content, created_by, status: 'on moderation' };
+  const post = { title, content, created_by, status, status_reason };
 
   const { data, error } = await supabase
     .from('posts')
@@ -111,7 +115,6 @@ export async function updatePost({
   }
   if (!cover) return data;
   if (cover === data.cover) return data;
-
 
   const fileUrl = await uploadImage('cover', id, cover);
 
@@ -136,4 +139,17 @@ export async function uploadImage(
     .upload(fileName, image);
   if (storageError) throw new Error(storageError.message);
   return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${name}s/${fileName}`;
+}
+
+export async function deletePost({ id }: { id: number }) {
+  const { data, error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
 }

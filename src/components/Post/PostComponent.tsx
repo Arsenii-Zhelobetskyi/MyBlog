@@ -9,10 +9,15 @@ import { useUser } from '@/components/SignIn/useUser';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Underline from '@tiptap/extension-underline';
-import { NotebookPen, Siren, Trash2 } from 'lucide-react';
+import { NotebookPen, Siren, AlertCircle } from 'lucide-react';
 
-import { useNavigate } from 'react-router-dom';
 import postStore from '@/store/postStore.ts';
+import { useNavigate } from 'react-router-dom';
+import DeclinePost from '@/components/Post/DeclinePost';
+import PublishPost from '@/components/Post/PublishPost';
+import DeletePost from '@/components/Post/DeletePost';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
 const extensions = [StarterKit, Underline];
 
 function PostComponent() {
@@ -47,12 +52,11 @@ function PostComponent() {
     setCover(post.cover === null ? '' : post.cover);
     navigate('/editor');
   }
-  function handleDecline() {}
 
   return (
     <div className="flex flex-col gap-11">
       {post.cover && (
-        <div className="absolute inset-0 top-20 -z-10">
+        <div className="absolute inset-0 top-20 -z-10 mb-80">
           <img
             className="max-h-80 w-full object-cover"
             src={post.cover}
@@ -61,24 +65,31 @@ function PostComponent() {
         </div>
       )}
       <div className={`${post.cover ? 'mt-80' : ''}`}>
+        <Alert
+          variant="destructive"
+          className={`${post.status === 'declined' ? '' : 'hidden'} mb-10`}
+        >
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>This post was declined by admin</AlertTitle>
+          <AlertDescription>
+            reason:{' '}
+            {post.status_reason ? post.status_reason : 'No reason provided'}
+          </AlertDescription>
+        </Alert>
         <div
           className={`${user?.user.id === post.created_by || user?.isAdmin ? '' : 'hidden'} flex gap-2`}
         >
-          <Button variant="ghost" onClick={handleDecline}>
-            <Siren className="mr-2 h-4 w-4" />
-            Decline this post
-          </Button>
+          <PublishPost />
+          <DeclinePost />
           <Button variant="ghost" onClick={handleEdit}>
             <NotebookPen className="mr-2 h-4 w-4" />
             Edit this post
           </Button>
-          <Button variant="ghost">
-            <Trash2 className="mr-2 h-4 w-4" />
-            delete this post
-          </Button>
+          <DeletePost />
         </div>
-        <TypographyH1>{post.title}</TypographyH1>
+        <TypographyH1 className="pt-2">{post.title}</TypographyH1>
       </div>
+
       <div>
         <div
           className={cn(
