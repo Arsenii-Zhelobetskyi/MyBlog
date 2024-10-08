@@ -26,11 +26,13 @@ function UpdateFullName() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: user?.user?.user_metadata?.description,
+      description: user?.user?.description,
     },
   });
   function onSubmit(data: z.infer<typeof formSchema>) {
     updateUser({
+
+      id:user?.user.id,
       description: data.description,
     });
   }

@@ -30,12 +30,13 @@ function UpdateFullName() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: user?.user?.user_metadata?.firstName,
-      lastName: user?.user?.user_metadata?.lastName,
+      firstName: user?.user?.firstName,
+      lastName: user?.user?.lastName,
     },
   });
   function onSubmit(data: z.infer<typeof formSchema>) {
     updateUser({
+      id:user?.user.id,
       firstName: data.firstName,
       lastName: data.lastName,
       avatarImage,

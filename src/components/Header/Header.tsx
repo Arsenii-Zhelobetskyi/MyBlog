@@ -9,7 +9,7 @@ import { useCreatePost } from '@/components/Editor/useCreatePost';
 import { useUpdatePost } from '@/components/Editor/useUpdatePost';
 import postStore from '@/store/postStore.js';
 function Header() {
-  const { user, avatar } = useUser();
+  const { user, isPending, avatar } = useUser();
   const { createPost, isCreating } = useCreatePost();
   const { updatePost, isUpdating } = useUpdatePost();
 
@@ -41,7 +41,7 @@ function Header() {
       <div className="mx-auto flex max-w-7xl justify-between">
         <Navigation />
         <div className="flex gap-2">
-          {user?.isAuthenticated ? (
+          {user?.isAuthenticated && !isPending ? (
             <>
               <Button
                 className="mr-2"

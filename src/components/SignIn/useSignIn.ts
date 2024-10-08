@@ -11,11 +11,7 @@ export function useSignIn() {
   const { mutate: signIn, isPending } = useMutation({
     mutationFn: signInFunc,
     onSuccess: (data) => {
-      queryClient.setQueryData(['user'], {
-        user: data.user,
-        isAuthenticated: data.user.role === 'authenticated',
-        isAdmin: data.user.user_metadata?.role === 'admin',
-      });
+      queryClient.setQueryData(['user'], data);
       navigate('/');
     },
     onError: (error) => {

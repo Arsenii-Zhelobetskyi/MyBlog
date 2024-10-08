@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { TypographyP } from '@/components/ui/TypographyP';
 function MyProfileComponent() {
   const { user, avatar } = useUser();
+  console.log(avatar.avatarImage)
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div>
@@ -22,12 +23,12 @@ function MyProfileComponent() {
         </Avatar>
       </div>
       <TypographyH3 className="text-center">
-        Welcome {user?.user?.user_metadata?.firstName}{' '}
-        {user?.user?.user_metadata?.lastName}
+        Welcome {user?.user?.firstName}{' '}
+        {user?.user?.lastName}
       </TypographyH3>
-      {user?.user?.user_metadata?.description && (
+      {user?.user?.description && (
         <TypographyP className="text-center">
-          {user?.user?.user_metadata?.description}
+          {user?.user?.description}
         </TypographyP>
       )}
       <UpdateSettings />

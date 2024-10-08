@@ -19,13 +19,9 @@ export function useUpdateUser() {
           title: 'User info updated',
         })
       }
+      
 
-
-      queryClient.setQueryData(['user'], {
-        user: data.user,
-        isAuthenticated: data.user.role === 'authenticated',
-        isAdmin: data.user.user_metadata?.role === 'admin',
-      });
+    queryClient.invalidateQueries(['user']);
     },
     onError: (err) =>
       toast({

@@ -18,7 +18,7 @@ export async function getPosts(
   page?: number,
   sortBy?: { field: string; sortType: string },
   searchQuery?: { searchField: string; searchValue: string },
-  filterQuery?: { filterField: string; filterValue: string },
+  filterQuery?: { filterField: string; filterValue: any},
 ) {
   const { field, sortType } = sortBy || { field: '', sortType: '' };
   const { searchField, searchValue } = searchQuery || {
@@ -42,7 +42,12 @@ export async function getPosts(
     query = query.order(field, { ascending: sortType === 'asc' });
   }
   if (searchValue) {
-  query=query.ilike(searchField, `%${searchValue}%`);
+    if (searchField==='created_by'){
+      query = query.eq(searchField, searchValue);
+    } else {
+      query = query.ilike(searchField, `%${searchValue}%`);
+    }
+    // console.log(searchValue)
     // query = query.textSearch(searchField, `${searchValue}`);
   }
 
