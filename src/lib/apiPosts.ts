@@ -15,6 +15,7 @@ export async function getPost(id: string | undefined) {
 
 export async function getPosts(
   pageSize: number,
+  page?: number,
   sortBy?: { field: string; sortType: string },
   searchQuery?: { searchField: string; searchValue: string },
   filterQuery?: { filterField: string; filterValue: string },
@@ -40,6 +41,11 @@ export async function getPosts(
 
   if (filterValue) {
     query = query.eq(filterField, filterValue);
+  }
+  if (page) {
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+    query = query.range(from, to);
   }
   const { data, error } = await query;
   if (error) {

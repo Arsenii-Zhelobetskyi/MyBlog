@@ -4,8 +4,10 @@ import { Separator } from '@/components/ui/separator';
 import { useState, useEffect } from 'react';
 import PostStatus from '@/components/ui/PostStatus';
 import { useUser } from '@/components/SignIn/useUser';
+import { Button } from '@/components/ui/button';
 function Search() {
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
     null,
   );
@@ -54,10 +56,16 @@ function Search() {
       )}
       <Separator />
       <Posts
-        pageSize={10}
+        page={page}
+        pageSize={5}
         filterQuery={user?.isAdmin? filter: undefined}
         searchQuery={{ searchField: 'title', searchValue: search }}
       />
+
+      <div className='flex justify-center'>
+
+      <Button onClick={()=>setPage((page)=>page+1)}>Load more</Button>
+      </div>
     </div>
   );
 }

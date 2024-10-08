@@ -76,11 +76,16 @@ function PostComponent() {
             {post.status_reason ? post.status_reason : 'No reason provided'}
           </AlertDescription>
         </Alert>
+
         <div
-          className={`${user?.user.id === post.created_by || user?.isAdmin ? '' : 'hidden'} flex gap-2`}
+          className={`${user?.user.id === post.created_by || user?.isAdmin ? '' : 'hidden'} flex max-md:justify-center flex-wrap gap-2`}
         >
-          <PublishPost />
-          <DeclinePost />
+          {user?.isAdmin && (
+            <>
+              <PublishPost />
+              <DeclinePost />
+            </>
+          )}
           <Button variant="ghost" onClick={handleEdit}>
             <NotebookPen className="mr-2 h-4 w-4" />
             Edit this post

@@ -30,7 +30,7 @@ function PublishPost() {
     }
   }, [isSuccess]);
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog  open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost">
           <CircleCheck className="mr-2 h-4 w-4" />

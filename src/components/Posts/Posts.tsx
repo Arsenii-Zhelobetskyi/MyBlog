@@ -5,16 +5,19 @@ import { TypographyH3 } from '@/components/ui/TypographyH3';
 function Posts({
   sortBy,
   pageSize,
+  page,
   searchQuery,
-  filterQuery,
+  filterQuery ={ filterField: 'status', filterValue: 'published' },
 }: {
   sortBy?: { field: string; sortType: string };
+  page?: number;
   pageSize: number;
   searchQuery?: { searchField: string; searchValue: string };
   filterQuery?: { filterField: string; filterValue: string };
 }) {
   const { isPending, posts } = usePosts(
     pageSize,
+    page,
     sortBy,
     searchQuery,
     filterQuery,
