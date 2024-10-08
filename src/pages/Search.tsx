@@ -81,7 +81,7 @@ function Search() {
       </div>
 
       {user?.isAdmin && (
-        <div className="flex justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-2">
           <PostStatus filter={filter} setFilter={handleSetFilter} />
         </div>
       )}
