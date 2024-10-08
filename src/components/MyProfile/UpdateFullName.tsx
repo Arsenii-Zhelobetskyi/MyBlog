@@ -17,13 +17,14 @@ import { Separator } from '../ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUpdateUser } from '@/components/MyProfile/useUpdateUser';
 import { useUser } from '@/components/SignIn/useUser';
+import { makeInitials } from '@/lib/utils';
 const formSchema = z.object({
   firstName: z.string().min(2),
   lastName: z.string().min(2),
 });
 import { useState } from 'react';
 function UpdateFullName() {
-  const { user, avatar } = useUser();
+  const { user } = useUser();
   const { updateUser, isPending } = useUpdateUser();
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
 
@@ -36,7 +37,7 @@ function UpdateFullName() {
   });
   function onSubmit(data: z.infer<typeof formSchema>) {
     updateUser({
-      id:user?.user.id,
+      id: user?.user.id,
       firstName: data.firstName,
       lastName: data.lastName,
       avatarImage,
@@ -52,8 +53,10 @@ function UpdateFullName() {
           <FormLabel className="text-right">Avatar</FormLabel>
           <div className="col-span-3 flex items-center gap-2">
             <Avatar>
-              <AvatarImage src={avatar.avatarImage} alt="avatar" />
-              <AvatarFallback>{avatar.initials}</AvatarFallback>
+              <AvatarImage src={user?.user.avatar} alt="avatar" />
+              <AvatarFallback>
+                {makeInitials(user?.user.firstName, user?.user.lastName)}
+              </AvatarFallback>
             </Avatar>
             <Input
               id="picture"

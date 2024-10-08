@@ -38,9 +38,6 @@ function PostCard({
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           <CardTitle className="border-none break-words">{post.title}</CardTitle>
-          <p className="break-words text-sm font-medium leading-none">
-            small desc
-          </p>
           <CardDescription className="flex items-center gap-2">
             <span>{formattedDate}</span>
             <Heart className="h-4 w-4" />

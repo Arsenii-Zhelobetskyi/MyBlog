@@ -39,7 +39,6 @@ export async function signIn({
     email,
     password,
   });
-  console.log(data, 'sign in');
   if (error) throw new Error(error.message);
   
   const { data: user, error: userError } = await supabase

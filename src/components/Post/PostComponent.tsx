@@ -1,6 +1,7 @@
 import { usePost } from '@/components/Post/usePost';
 import Spinner from '@/components/ui/Spinner';
 import { TypographyH1 } from '@/components/ui/TypographyH1';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { generateHTML } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useState } from 'react';
@@ -9,14 +10,15 @@ import { useUser } from '@/components/SignIn/useUser';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Underline from '@tiptap/extension-underline';
-import { NotebookPen, Siren, AlertCircle } from 'lucide-react';
+import { AlertCircle, NotebookPen } from 'lucide-react';
 
+import DeclinePost from '@/components/Post/DeclinePost';
+import DeletePost from '@/components/Post/DeletePost';
+import PublishPost from '@/components/Post/PublishPost';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import postStore from '@/store/postStore.ts';
 import { useNavigate } from 'react-router-dom';
-import DeclinePost from '@/components/Post/DeclinePost';
-import PublishPost from '@/components/Post/PublishPost';
-import DeletePost from '@/components/Post/DeletePost';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { makeInitials } from '@/lib/utils';
 
 const extensions = [StarterKit, Underline];
 
@@ -24,7 +26,6 @@ function PostComponent() {
   const { isPending, post } = usePost();
   const [html, setHtml] = useState('');
   const navigate = useNavigate();
-  const cover = postStore((state) => state.cover);
   const setId = postStore((state) => state.setId);
   const setCover = postStore((state) => state.setCover);
   const setTitle = postStore((state) => state.setTitle);
@@ -78,7 +79,7 @@ function PostComponent() {
         </Alert>
 
         <div
-          className={`${user?.user.id === post.created_by || user?.isAdmin ? '' : 'hidden'} flex max-md:justify-center flex-wrap gap-2`}
+          className={`${user?.user.id === post.created_by || user?.isAdmin ? '' : 'hidden'} flex flex-wrap gap-2 max-md:justify-center`}
         >
           {user?.isAdmin && (
             <>
@@ -92,7 +93,17 @@ function PostComponent() {
           </Button>
           <DeletePost />
         </div>
-        <TypographyH1 className="pt-2">{post.title}</TypographyH1>
+        <TypographyH1 className="pt-2 pb-4">{post.title}</TypographyH1>
+        <div className='flex items-center gap-2'>
+          <Avatar>
+            <AvatarImage src={post.avatar} alt="avatar" />
+            <AvatarFallback>
+              {makeInitials(post.firstName, post.lastName)}
+            </AvatarFallback>
+          </Avatar>
+          <p>{post.firstName}</p>
+          <p>{post.lastName}</p>
+        </div>
       </div>
 
       <div>

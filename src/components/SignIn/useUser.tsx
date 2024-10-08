@@ -21,14 +21,7 @@ export function useUser() {
       isAuthenticated: false,
     }); // manually set some data into the react query cache
   }
-  const avatar = {
-    avatarImage: user?.user?.avatar,
-    initials:
-      (user?.user?.firstName?.charAt(0) || '').toUpperCase() +
-      user?.user?.lastName?.charAt(0)?.toUpperCase() || '',
-  };
   return {
-    avatar,
     isPending,
     user,
   };

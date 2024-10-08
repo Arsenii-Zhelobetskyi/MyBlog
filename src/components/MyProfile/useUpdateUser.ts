@@ -6,7 +6,7 @@ export function useUpdateUser() {
   const queryClient = useQueryClient();
   const { mutate: updateUser, isPending } = useMutation({
     mutationFn: updateUserInfo,
-    onSuccess: ({data,additionalMessage}) => {
+    onSuccess: (additionalMessage) => {
 
 
       if(additionalMessage){

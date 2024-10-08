@@ -50,7 +50,7 @@ export async function updateUserInfo({
       .single();
     if (error) throw new Error(error.message);
 
-    if (!avatarImage) return { data, additionalMessage };
+    if (!avatarImage) return;
 
     const fileName = `avatar-${id}-${Math.random()}`;
 
@@ -68,7 +68,7 @@ export async function updateUserInfo({
       .select()
       .single();
     if (avatarError) throw new Error(avatarError.message);
-    return { data: updatedUser, additionalMessage };
+    return;
   }
 
   if (email) {
@@ -88,9 +88,7 @@ export async function updateUserInfo({
   if (error) {
     throw new Error(error.message);
   }
-  return { data, additionalMessage };
-
-  // upload avatar
+  return additionalMessage;
 }
 
 export async function logout() {
@@ -101,24 +99,10 @@ export async function logout() {
 }
 
 export async function deleteUser(id: { id: string }) {
-  // const { error } = await supabase.auth.admin.deleteUser(id);
   const { data, error } = await supabase.rpc('delete_user_by_id', {
     user_id: id,
   });
-  // const { data, error } = await supabase.rpc('get_all_users_metadata')
-  // const { error } = await supabase
-  //   .from('should_delete_user')
-  //   .insert([{ id }]);
-  // const { errorE } = await supabase
-  //   .from('should_delete_user')
-  //   .delete()
-  //   .eq('id', id);
-  // if(errorE)
-  // {
-  //   console.log(errorE.message);
-  // }
-  // if (error) {
-  //   console.log(error.message);
-  //   throw new Error(error.message);
-  // }
+  if (error) {
+    throw new Error(error.message);
+  }
 }

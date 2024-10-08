@@ -5,26 +5,25 @@ import { useUser } from '@/components/SignIn/useUser';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { TypographyP } from '@/components/ui/TypographyP';
+import { makeInitials } from '@/lib/utils';
 function MyProfileComponent() {
-  const { user, avatar } = useUser();
-  console.log(avatar.avatarImage)
+  const { user } = useUser();
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div>
         <Avatar className="h-20 w-20">
           <AvatarImage
-            src={avatar.avatarImage}
+            src={user?.user.avatar}
             className="object-cover"
             alt="avatar"
           />
           <AvatarFallback className="sm:text-xl">
-            {avatar.initials}
+            {makeInitials(user?.user.firstName, user?.user.lastName)}
           </AvatarFallback>
         </Avatar>
       </div>
       <TypographyH3 className="text-center">
-        Welcome {user?.user?.firstName}{' '}
-        {user?.user?.lastName}
+        Welcome {user?.user?.firstName} {user?.user?.lastName}
       </TypographyH3>
       {user?.user?.description && (
         <TypographyP className="text-center">

@@ -8,8 +8,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useCreatePost } from '@/components/Editor/useCreatePost';
 import { useUpdatePost } from '@/components/Editor/useUpdatePost';
 import postStore from '@/store/postStore.js';
+import { makeInitials } from '@/lib/utils';
 function Header() {
-  const { user, isPending, avatar } = useUser();
+  const { user, isPending } = useUser();
   const { createPost, isCreating } = useCreatePost();
   const { updatePost, isUpdating } = useUpdatePost();
 
@@ -60,8 +61,8 @@ function Header() {
                 className="hover:cursor-pointer"
                 onClick={() => navigate('/my-profile')}
               >
-                <AvatarImage src={avatar.avatarImage} alt="avatar" />
-                <AvatarFallback>{avatar.initials}</AvatarFallback>
+                <AvatarImage src={user.user.avatar} alt="avatar" />
+                <AvatarFallback>{makeInitials(user.user.firstName,user.user.lastName)}</AvatarFallback>
               </Avatar>
             </>
           ) : (
