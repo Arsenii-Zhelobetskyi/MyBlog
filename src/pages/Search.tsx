@@ -1,13 +1,18 @@
 import Posts from '@/components/Posts/Posts';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { useState, useEffect } from 'react';
-import PostStatus from '@/components/ui/PostStatus';
+import { usePosts } from '@/components/Posts/usePosts';
 import { useUser } from '@/components/SignIn/useUser';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import Pagination from '@/components/ui/Pagination';
+import PostStatus from '@/components/ui/PostStatus';
+import { Separator } from '@/components/ui/separator';
+import { useEffect, useState } from 'react';
+
+const pageSize = 8;
+
 function Search() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [countState, setCountState] = useState(0);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
     null,
   );
@@ -16,6 +21,27 @@ function Search() {
     filterValue: 'published',
   });
   const { user } = useUser();
+
+  const { isPending, posts, count } = usePosts(
+    pageSize,
+    page,
+    undefined,
+    { searchField: 'title', searchValue: search },
+    filter,
+  );
+
+  useEffect(() => {
+    if (count !== countState && count !== undefined) {
+      setCountState(count);
+    }
+  }, [count, countState]);
+  useEffect(() => {
+    return () => {
+      if (typingTimeout) {
+        clearTimeout(typingTimeout);
+      }
+    };
+  }, [typingTimeout]);
 
   function handleSearch(e) {
     const value = e.target.value;
@@ -26,19 +52,24 @@ function Search() {
 
     setTypingTimeout(
       setTimeout(() => {
+        setPage(1);
         setSearch(value);
       }, 500),
     );
   }
 
-  useEffect(() => {
-    return () => {
-      if (typingTimeout) {
-        clearTimeout(typingTimeout);
-      }
-    };
-  }, [typingTimeout]);
+  function handleSetPage(event: { selected: number }) {
+    setPage(event.selected + 1);
+  }
+  function handleSetFilter(filter: {
+    filterField: string;
+    filterValue: string;
+  }) {
+    setFilter(filter);
+    setPage(1);
+  }
 
+  const pageCount = Math.ceil(countState / pageSize);
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-center">
@@ -51,21 +82,22 @@ function Search() {
 
       {user?.isAdmin && (
         <div className="flex justify-center gap-2">
-          <PostStatus filter={filter} setFilter={setFilter} />
+          <PostStatus filter={filter} setFilter={handleSetFilter} />
         </div>
       )}
       <Separator />
-      <Posts
-        page={page}
-        pageSize={5}
-        filterQuery={user?.isAdmin? filter: undefined}
-        searchQuery={{ searchField: 'title', searchValue: search }}
-      />
+      <Posts isPending={isPending} posts={posts} />
 
-      <div className='flex justify-center'>
-
-      <Button onClick={()=>setPage((page)=>page+1)}>Load more</Button>
-      </div>
+      {countState === 0 ? null : (
+        <div className="flex justify-center">
+          <Pagination
+            key={pageCount}
+            page={page}
+            handleSetPage={handleSetPage}
+            pageCount={pageCount}
+          />
+        </div>
+      )}
     </div>
   );
 }

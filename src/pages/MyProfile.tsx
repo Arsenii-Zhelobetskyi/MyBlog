@@ -4,15 +4,21 @@ import { useUser } from '@/components/SignIn/useUser';
 import { useState } from 'react';
 
 import PostStatus from '@/components/ui/PostStatus';
+import { usePosts } from '@/components/Posts/usePosts';
 function MyProfile() {
   const { user } = useUser();
-  const [filter, setFilter] = useState(
-    {
+  const [filter, setFilter] = useState({
     filterField: 'status',
     filterValue: 'published',
-  }
-);
+  });
 
+  const { isPending, posts } = usePosts(
+    5,
+    undefined,
+    undefined,
+    { searchField: 'created_by', searchValue: user?.user.id },
+    filter,
+  );
 
   return (
     <div className="flex flex-col gap-8">
@@ -20,11 +26,7 @@ function MyProfile() {
       <div className="flex justify-center gap-2">
         <PostStatus filter={filter} setFilter={setFilter} />
       </div>
-      <Posts
-        pageSize={8}
-        filterQuery={filter}
-        searchQuery={{ searchField: 'created_by', searchValue: user?.user.id }}
-      />
+      <Posts posts={posts} isPending={isPending} />
     </div>
   );
 }

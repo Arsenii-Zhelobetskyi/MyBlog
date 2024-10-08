@@ -6,10 +6,11 @@ export function usePosts(
   page?: number,
   sortBy?: { field: string; sortType: string },
   searchQuery?: { searchField: string; searchValue: string },
-  filterQuery?: { filterField: string; filterValue: string },
+  filterQuery: { filterField: string; filterValue: string } = {
+    filterField: 'status',
+    filterValue: 'published',
+  },
 ) {
-
-
   const queryKey = [
     'posts',
     pageSize,
@@ -18,19 +19,12 @@ export function usePosts(
     ...(sortBy?.sortType ? [sortBy.sortType] : []),
     ...(searchQuery?.searchValue ? [`search-${searchQuery?.searchValue}`] : []),
     ...(filterQuery?.filterField ? [`filter-${filterQuery?.filterValue}`] : []),
-    
   ];
 
-
-  const {
-    isPending,
-    data: posts,
-    error,
-  } = useQuery({
+  const { isPending, data, error } = useQuery({
     queryKey,
-    queryFn: () =>
-      getPosts(pageSize, page, sortBy, searchQuery, filterQuery),
+    queryFn: () => getPosts(pageSize, page, sortBy, searchQuery, filterQuery),
   });
 
-  return { isPending, posts, error };
+  return { isPending, posts: data?.data, count: data?.count, error };
 }

@@ -30,7 +30,13 @@ export async function getPosts(
     filterValue: '',
   };
 
-  let query = supabase.from('posts').select().limit(pageSize);
+  let query = supabase.from('posts').select('*', { count: 'exact' });
+
+  if (page) {
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+    query = query.range(from, to);
+  }
 
   if (field) {
     query = query.order(field, { ascending: sortType === 'asc' });
@@ -42,17 +48,14 @@ export async function getPosts(
   if (filterValue) {
     query = query.eq(filterField, filterValue);
   }
-  if (page) {
-    const from = (page - 1) * pageSize;
-    const to = from + pageSize - 1;
-    query = query.range(from, to);
-  }
-  const { data, error } = await query;
+
+  query = query.limit(pageSize);
+  const { data, count, error } = await query;
   if (error) {
     console.log(error);
     throw new Error('Posts could not be fetched');
   }
-  return data;
+  return {data,count};
 }
 
 export async function createPost({

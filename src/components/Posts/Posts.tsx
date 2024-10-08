@@ -1,27 +1,17 @@
 import Post from '@/components/Posts/PostCard';
-import { usePosts } from '@/components/Posts/usePosts';
 import Spinner from '@/components/ui/Spinner';
 import { TypographyH3 } from '@/components/ui/TypographyH3';
-function Posts({
-  sortBy,
-  pageSize,
-  page,
-  searchQuery,
-  filterQuery ={ filterField: 'status', filterValue: 'published' },
-}: {
-  sortBy?: { field: string; sortType: string };
-  page?: number;
-  pageSize: number;
-  searchQuery?: { searchField: string; searchValue: string };
-  filterQuery?: { filterField: string; filterValue: string };
-}) {
-  const { isPending, posts } = usePosts(
-    pageSize,
-    page,
-    sortBy,
-    searchQuery,
-    filterQuery,
-  );
+function Posts(
+  {
+    isPending,
+    posts,
+
+  }
+  :{
+    isPending: boolean,
+    posts:[],
+  }
+) {
   if (isPending) {
     return (
       <div className="flex justify-center">
