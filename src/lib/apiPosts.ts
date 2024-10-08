@@ -42,7 +42,8 @@ export async function getPosts(
     query = query.order(field, { ascending: sortType === 'asc' });
   }
   if (searchValue) {
-    query = query.eq(searchField, searchValue);
+  query=query.ilike(searchField, `%${searchValue}%`);
+    // query = query.textSearch(searchField, `${searchValue}`);
   }
 
   if (filterValue) {
