@@ -10,17 +10,21 @@ export async function getPost(id: string | undefined) {
     console.log(error);
     throw new Error('Post could not be fetched');
   }
-  const { data: userData, error: userInfo } = await supabase
+  const { data: userData, error: userDataError } = await supabase
     .from('users')
-    .select('firstName, lastName, avatar')
+    .select('id, firstName, lastName, avatar')
     .eq('id', data.created_by)
     .single();
-  if (userInfo) {
-    console.log(userInfo);
-    throw new Error(userInfo.message);
+  if (userDataError) {
+    throw new Error(userDataError.message);
   }
-  console.log(data)
-  return {...data,...userData};
+  const userInfo = {
+    user_id: userData.id,
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    avatar: userData.avatar,
+  };
+  return { ...data, ...userInfo };
 }
 
 export async function getPosts(
@@ -57,10 +61,7 @@ export async function getPosts(
     } else {
       query = query.ilike(searchField, `%${searchValue}%`);
     }
-    // console.log(searchValue)
-    // query = query.textSearch(searchField, `${searchValue}`);
   }
-
   if (filterValue) {
     query = query.eq(filterField, filterValue);
   }

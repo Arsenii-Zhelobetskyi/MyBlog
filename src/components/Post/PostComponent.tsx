@@ -15,6 +15,7 @@ import { AlertCircle, NotebookPen } from 'lucide-react';
 import DeclinePost from '@/components/Post/DeclinePost';
 import DeletePost from '@/components/Post/DeletePost';
 import PublishPost from '@/components/Post/PublishPost';
+import DeleteUser from '@/components/Post/DeleteUser';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import postStore from '@/store/postStore.ts';
 import { useNavigate } from 'react-router-dom';
@@ -103,6 +104,7 @@ function PostComponent() {
           </Avatar>
           <p>{post.firstName}</p>
           <p>{post.lastName}</p>
+          <DeleteUser id={post.user_id}/>
         </div>
       </div>
 

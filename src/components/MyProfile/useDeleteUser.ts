@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 export function useDeleteUser() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { mutate: deleteUser, isPending } = useMutation({
+  const { mutate: deleteUser,isSuccess, isPending } = useMutation({
     mutationFn: deleteUserFunc,
     onSuccess: () => {
       queryClient.invalidateQueries();
       navigate('/', { replace: true });
     },
   });
-  return { deleteUser, isPending };
+  return { deleteUser,isSuccess, isPending };
 }

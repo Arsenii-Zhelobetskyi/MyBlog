@@ -99,6 +99,7 @@ export async function logout() {
 }
 
 export async function deleteUser(id: { id: string }) {
+  console.log(id,'in func');
   const { data, error } = await supabase.rpc('delete_user_by_id', {
     user_id: id,
   });
