@@ -14,11 +14,6 @@ export async function signUp({
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      data: {
-        role: 'admin',
-      },
-    },
   });
   if (error) throw new Error(error.message);
   const { error: uploadError } = await supabase

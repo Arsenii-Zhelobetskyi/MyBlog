@@ -14,17 +14,20 @@ import { AlertCircle, NotebookPen } from 'lucide-react';
 
 import DeclinePost from '@/components/Post/DeclinePost';
 import DeletePost from '@/components/Post/DeletePost';
-import PublishPost from '@/components/Post/PublishPost';
 import DeleteUser from '@/components/Post/DeleteUser';
+import PublishPost from '@/components/Post/PublishPost';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { makeInitials } from '@/lib/utils';
 import postStore from '@/store/postStore.ts';
 import { useNavigate } from 'react-router-dom';
-import { makeInitials } from '@/lib/utils';
+import { Heart } from 'lucide-react';
+import { useLike } from '@/components/Post/useLike';
 
 const extensions = [StarterKit, Underline];
 
 function PostComponent() {
   const { isPending, post } = usePost();
+  const { like } = useLike();
   const [html, setHtml] = useState('');
   const navigate = useNavigate();
   const setId = postStore((state) => state.setId);
@@ -32,6 +35,7 @@ function PostComponent() {
   const setTitle = postStore((state) => state.setTitle);
   const setContent = postStore((state) => state.setContent);
   const { user } = useUser();
+  const shouldLike = !post?.likesData?.some(like => like.user_id === user?.user.id);
 
   useEffect(() => {
     if (post) {
@@ -54,7 +58,11 @@ function PostComponent() {
     setCover(post.cover === null ? '' : post.cover);
     navigate('/editor');
   }
-
+  
+  function handleLike() {
+    like({ id: post.id, user_id: user?.user.id, likeQuantity: post.likes, shouldLike });
+  }
+  
   return (
     <div className="flex flex-col gap-11">
       {post.cover && (
@@ -94,8 +102,15 @@ function PostComponent() {
           </Button>
           <DeletePost />
         </div>
-        <TypographyH1 className="pt-2 pb-4">{post.title}</TypographyH1>
-        <div className='flex items-center gap-2'>
+        <TypographyH1 className="pb-4 pt-2">{post.title}</TypographyH1>
+        <div className="flex items-center gap-2">
+          <div
+            className="flex cursor-pointer items-center"
+            onClick={handleLike}
+          >
+            <Heart className="mr-2 h-4 w-4" fill={`${ shouldLike ? 'none':'black'}`} />
+            <span>{post.likes}</span>
+          </div>
           <Avatar>
             <AvatarImage src={post.avatar} alt="avatar" />
             <AvatarFallback>
@@ -104,7 +119,7 @@ function PostComponent() {
           </Avatar>
           <p>{post.firstName}</p>
           <p>{post.lastName}</p>
-          <DeleteUser id={post.user_id}/>
+          <DeleteUser id={post.user_id} />
         </div>
       </div>
 

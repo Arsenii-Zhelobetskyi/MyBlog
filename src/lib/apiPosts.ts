@@ -1,5 +1,52 @@
 import { supabase } from '@/lib/supabase';
 
+export async function likePost({
+  id,
+  user_id,
+  likeQuantity,
+  shouldLike,
+}: {
+  id: number;
+  user_id: string;
+  likeQuantity: number;
+  shouldLike: boolean;
+}) {
+  if (!shouldLike) {
+    const { data, error } = await supabase
+      .from('likes')
+      .delete()
+      .eq('post_id', id)
+      .eq('user_id', user_id)
+      .select();
+    if (error) {
+      throw new Error(error.message);
+    }
+    const { error: postError } = await supabase
+      .from('posts')
+      .update({ likes: likeQuantity - 1 })
+      .eq('id', id);
+    if (postError) {
+      throw new Error(postError.message);
+    }
+  }
+  if (shouldLike) {
+    const { data, error } = await supabase
+      .from('likes')
+      .insert({ post_id: id, user_id })
+      .select();
+    if (error) {
+      throw new Error(error.message);
+    }
+    const { error: postError } = await supabase
+      .from('posts')
+      .update({ likes: likeQuantity + 1 })
+      .eq('id', id);
+    if (postError) {
+      throw new Error(postError.message);
+    }
+  }
+}
+
 export async function getPost(id: string | undefined) {
   const { data, error } = await supabase
     .from('posts')
@@ -24,7 +71,14 @@ export async function getPost(id: string | undefined) {
     lastName: userData.lastName,
     avatar: userData.avatar,
   };
-  return { ...data, ...userInfo };
+  const { data: likesData, error: likesError } = await supabase
+    .from('likes')
+    .select('user_id')
+    .eq('post_id', id);
+  if (likesError) {
+    throw new Error(likesError.message);
+  }
+  return { ...data, ...userInfo, likesData };
 }
 
 export async function getPosts(
