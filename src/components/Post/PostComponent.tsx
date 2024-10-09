@@ -60,6 +60,7 @@ function PostComponent() {
   }
   
   function handleLike() {
+    if(!user?.isAuthenticated) return;
     like({ id: post.id, user_id: user?.user.id, likeQuantity: post.likes, shouldLike });
   }
   
