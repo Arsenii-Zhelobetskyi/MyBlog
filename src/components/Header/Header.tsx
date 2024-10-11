@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 import CreateButton from '@/components/Header/CreateButton';
 import { makeInitials } from '@/lib/utils';
+import { ModeToggle } from './ModeToggle';
 function Header() {
   const { user, isPending } = useUser();
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function Header() {
         <Navigation />
 
         <div className="flex gap-2">
+          <ModeToggle/>
           {user?.isAuthenticated && !isPending ? (
             <>
               <CreateButton />
