@@ -35,7 +35,9 @@ function PostComponent() {
   const setTitle = postStore((state) => state.setTitle);
   const setContent = postStore((state) => state.setContent);
   const { user } = useUser();
-  const shouldLike = !post?.likesData?.some(like => like.user_id === user?.user.id);
+  const shouldLike = !post?.likesData?.some(
+    (like) => like.user_id === user?.user.id,
+  );
 
   useEffect(() => {
     if (post) {
@@ -58,12 +60,17 @@ function PostComponent() {
     setCover(post.cover === null ? '' : post.cover);
     navigate('/editor');
   }
-  
+
   function handleLike() {
-    if(!user?.isAuthenticated) return;
-    like({ id: post.id, user_id: user?.user.id, likeQuantity: post.likes, shouldLike });
+    if (!user?.isAuthenticated) return;
+    like({
+      id: post.id,
+      user_id: user?.user.id,
+      likeQuantity: post.likes,
+      shouldLike,
+    });
   }
-  
+
   return (
     <div className="flex flex-col gap-11">
       {post.cover && (
@@ -89,7 +96,7 @@ function PostComponent() {
         </Alert>
 
         <div
-          className={`${user?.user.id === post.created_by || user?.isAdmin ? '' : 'hidden'} flex flex-wrap gap-2 max-md:justify-center`}
+          className={`${user?.user?.id === post.created_by || user?.isAdmin ? '' : 'hidden'} flex flex-wrap gap-2 max-md:justify-center`}
         >
           {user?.isAdmin && (
             <>
@@ -109,7 +116,10 @@ function PostComponent() {
             className="flex cursor-pointer items-center"
             onClick={handleLike}
           >
-            <Heart className="mr-2 h-4 w-4" fill={`${ shouldLike ? 'none':'black'}`} />
+            <Heart
+              className="mr-2 h-4 w-4"
+              fill={`${shouldLike ? 'none' : 'currentColor'}`}
+            />
             <span>{post.likes}</span>
           </div>
           <Avatar>
@@ -120,14 +130,14 @@ function PostComponent() {
           </Avatar>
           <p>{post.firstName}</p>
           <p>{post.lastName}</p>
-          <DeleteUser id={post.user_id} />
+          {user?.isAdmin && <DeleteUser id={post.user_id} />}
         </div>
       </div>
 
       <div>
         <div
           className={cn(
-            'prose dark:prose-invert max-w-none [&_ol]:list-decimal [&_ul]:list-disc',
+            'prose max-w-none dark:prose-invert [&_ol]:list-decimal [&_ul]:list-disc',
           )}
           dangerouslySetInnerHTML={{ __html: html }}
         />
