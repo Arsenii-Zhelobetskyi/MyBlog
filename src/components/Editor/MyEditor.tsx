@@ -3,12 +3,11 @@ import ContentEditor from '@/components/Editor/ContentEditor';
 import AddCover from '@/components/Editor/AddCover';
 import { Input } from '@/components/ui/input';
 import postStore from '@/store/postStore.js';
+import LeaveEditor from '@/components/Editor/LeaveEditor';
 function MyEditor() {
   const title = postStore((state) => state.title);
   const setTitle = postStore((state) => state.setTitle);
-  const content = postStore((state) => state.content);
   const cover = postStore((state) => state.cover);
-  const reset = postStore((state) => state.reset);
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col">
@@ -32,6 +31,7 @@ function MyEditor() {
         placeholder="Your title"
       />
       <ContentEditor />
+      <LeaveEditor />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { BubbleMenu, Editor } from '@tiptap/react';
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -59,4 +60,4 @@ function MyBubbleMenu({ editor }: { editor: Editor }) {
   );
 }
 
-export default MyBubbleMenu;
+export default memo(MyBubbleMenu);

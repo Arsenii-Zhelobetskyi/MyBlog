@@ -1,18 +1,18 @@
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
+import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
-import CharacterCount from '@tiptap/extension-character-count';
 
 import MyBubbleMenu from '@/components/Editor/MyBubbleMenu';
+import { cn } from '@/lib/utils';
 import Commands from './SlashCommand/commands.js';
 import getSuggestionItems from './SlashCommand/items.js';
 import renderItems from './SlashCommand/renderItems.jsx';
-import { cn } from '@/lib/utils';
 
 import postStore from '@/store/postStore.js';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 const extensions = [
   StarterKit.configure({
@@ -36,8 +36,9 @@ const extensions = [
 
 const ContentEditor = () => {
   const content = postStore((state) => state.content);
-  const setContent = postStore((state) => state.setContent);
-  
+  const setEditor = postStore((state) => state.setEditor);
+
+  const setIsContentDirty = postStore((state) => state.setIsContentDirty);
   const editor = useEditor({
     extensions,
     editorProps: {
@@ -46,17 +47,19 @@ const ContentEditor = () => {
       },
     },
     content: content.content.length ? content : undefined,
+    onUpdate: ({ editor }) => {
+      if(editor.storage.characterCount.characters()>0){
+        setIsContentDirty(true);
+      }
+      else{
+        setIsContentDirty(false);
+      }
+    },
   });
 
   useEffect(() => {
-    if (editor) setContent(editor.getJSON() as { type: string; content: [] });
-  }, [
-    editor,
-    setContent,
-    editor?.storage.characterCount.characters({ mode: 'nodeSize' }),
-  ]);
-
-
+    setEditor(editor);
+  }, [editor, setEditor]);
   return (
     <div className="flex-1">
       <EditorContent editor={editor} className="editor" />
