@@ -127,7 +127,7 @@ function PostComponent() {
       <div>
         <div
           className={cn(
-            'prose max-w-none [&_ol]:list-decimal [&_ul]:list-disc',
+            'prose dark:prose-invert max-w-none [&_ol]:list-decimal [&_ul]:list-disc',
           )}
           dangerouslySetInnerHTML={{ __html: html }}
         />

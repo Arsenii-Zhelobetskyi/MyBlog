@@ -43,7 +43,7 @@ const ContentEditor = () => {
     extensions,
     editorProps: {
       attributes: {
-        class: cn('prose max-w-none [&_ol]:list-decimal [&_ul]:list-disc'),
+        class: cn('prose dark:prose-invert max-w-none [&_ol]:list-decimal [&_ul]:list-disc'),
       },
     },
     content: content.content.length ? content : undefined,
