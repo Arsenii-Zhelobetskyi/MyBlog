@@ -22,7 +22,7 @@ function Posts(
   if (posts.length === 0)
     return (
       <div className="flex flex-col items-center justify-center">
-        <img src="/public/not-found.svg" className="max-w-80" alt="Not Found" />
+        <img src="/public/not-found.svg" className="max-w-80 dark:invert" alt="Not Found" />
         <TypographyH3>It's empty here...</TypographyH3>
       </div>
     );
