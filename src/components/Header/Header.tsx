@@ -1,4 +1,5 @@
 import Navigation from '@/components/Header/Navigation';
+
 import { useUser } from '@/components/SignIn/useUser';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -10,17 +11,16 @@ function Header() {
   const { user, isPending } = useUser();
   const navigate = useNavigate();
 
-
-  
   return (
     <header className="fixed left-0 right-0 z-50 px-8 py-2 backdrop-blur-sm">
       {/* LOGO  */}
       <div className="mx-auto flex max-w-7xl justify-between">
         <Navigation />
+
         <div className="flex gap-2">
           {user?.isAuthenticated && !isPending ? (
             <>
-              <CreateButton/>
+              <CreateButton />
               <Avatar
                 className="hover:cursor-pointer"
                 onClick={() => navigate('/my-profile')}

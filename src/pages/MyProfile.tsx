@@ -46,7 +46,7 @@ function MyProfile() {
   return (
     <div className="flex flex-col gap-8">
       <MyProfileComponent />
-      <div className="flex justify-center gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         <PostStatus filter={filter} setFilter={handleSetFilter} />
       </div>
       <Posts posts={posts} isPending={isPending} />

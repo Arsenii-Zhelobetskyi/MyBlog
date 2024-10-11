@@ -1,4 +1,4 @@
-import { House, Search, SquareMenu } from 'lucide-react';
+import { House, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -7,24 +7,15 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
+import HamburgerMenu from './HamburgerMenu';
 
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 function Navigation() {
   const navigate = useNavigate();
 
   return (
     <NavigationMenu>
-      <NavigationMenuList className="max-sm:hidden">
+      <NavigationMenuList className="hidden sm:flex">
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <Button variant="ghost" className="" onClick={() => navigate('/')}>
@@ -40,6 +31,7 @@ function Navigation() {
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
+      <HamburgerMenu  />
     </NavigationMenu>
   );
 }
