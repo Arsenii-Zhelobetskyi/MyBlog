@@ -30,14 +30,17 @@ const renderItems = () => {
         getReferenceClientRect: props.clientRect
       });
     },
-    onKeyDown(props) {
-      if (props.event.key === "Escape") {
-        popup[0].hide();
-
-        return true;
+    onKeyDown({event}) {
       
-      }
+      if (event.key === "Escape") {
+        popup.hide();
 
+        props.editor.commands.focus();
+        return true;
+      }
+      if(event.key==="Enter"){
+      return true;
+      }
       return component.ref?.onKeyDown(props);
     },
     onExit() {

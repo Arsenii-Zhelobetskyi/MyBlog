@@ -1,6 +1,4 @@
-const getSuggestionItems = (query) => {
-  const normalizedQuery = typeof query === "string" ? query.toLowerCase() : "";
-
+const getSuggestionItems = ({query}) => {
   return [
     {
       title: "Text",
@@ -24,8 +22,8 @@ const getSuggestionItems = (query) => {
       title: "H2",
       command: ({ editor, range }) => {
         editor
-          .chain()
-          .focus()
+        .chain()
+        .focus()
           .deleteRange(range)
 
           .toggleHeading({ level: 2 })
@@ -62,8 +60,8 @@ const getSuggestionItems = (query) => {
       }
     }
   ]
-    .filter((item) => item.title.toLowerCase().startsWith(normalizedQuery))
+    .filter((item) => item.title.toLowerCase().startsWith(query.toLowerCase()))
     .slice(0, 10);
-};
+  };
 
-export default getSuggestionItems;
+  export default getSuggestionItems;

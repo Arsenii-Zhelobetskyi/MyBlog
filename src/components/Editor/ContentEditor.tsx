@@ -9,7 +9,7 @@ import MyBubbleMenu from '@/components/Editor/MyBubbleMenu';
 import { cn } from '@/lib/utils';
 import Commands from './SlashCommand/commands.js';
 import getSuggestionItems from './SlashCommand/items.js';
-import renderItems from './SlashCommand/renderItems.jsx';
+import renderItems from './SlashCommand/renderItems.js';
 
 import postStore from '@/store/postStore.js';
 import { useEffect } from 'react';

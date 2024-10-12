@@ -12,7 +12,7 @@ import { House, Search, SquareMenu } from 'lucide-react';
 function HamburgerMenu() {
   const navigate = useNavigate();
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"

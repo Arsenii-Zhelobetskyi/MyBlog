@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,40 +7,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-const CommandList = ({ editor, items, command }) => {
+const CommandsList = ({ items, command }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-
   const [show, setShow] = useState(true);
+
   useEffect(() => {
     setSelectedIndex(0);
   }, [items]);
 
-  const onKeyDown = useCallback(
-    (event) => {
-      if (event.key === 'Escape') {
-        setShow(false);
-        return true;
-      }
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+
       if (event.key === 'ArrowUp') {
         upHandler();
-        return true;
-      }
-
-      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+      } else if (event.key === 'ArrowDown') {
         downHandler();
-        return true;
-      }
-
-      if (event.key === 'Enter') {
+        event.preventDefault();
+      } else if (event.key === 'Enter') {
         enterHandler();
-        return true;
+        event.preventDefault();
       }
+    };
 
-      return false;
-    },
-    [selectedIndex, items, editor],
-  );
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedIndex, items]);
 
   const upHandler = () => {
     setSelectedIndex((selectedIndex + items.length - 1) % items.length);
@@ -61,25 +55,21 @@ const CommandList = ({ editor, items, command }) => {
       command(item);
     }
   };
-  useEffect(() => {
-    const handleKeyDown = (event) => onKeyDown(event);
 
-    // Add event listener for keydown when component mounts
-    window.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup event listener when component unmounts
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onKeyDown]);
   return (
-    <DropdownMenu open={show}>
+    <DropdownMenu open={show} onOpenChange={setShow}>
       <DropdownMenuTrigger></DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <DropdownMenuLabel>Turn into</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {items.map((item, index) => (
-          <DropdownMenuItem key={index} onClick={() => selectItem(index)}>
+          <DropdownMenuItem
+            className={
+              index === selectedIndex ? 'bg-accent text-accent-foreground' : ''
+            }
+            key={index}
+            onClick={() => selectItem(index)}
+          >
             {item.element || item.title}
           </DropdownMenuItem>
         ))}
@@ -88,4 +78,4 @@ const CommandList = ({ editor, items, command }) => {
   );
 };
 
-export default CommandList;
+export default CommandsList;
