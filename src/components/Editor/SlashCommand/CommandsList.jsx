@@ -59,6 +59,7 @@ const CommandsList = ({ items, command }) => {
           key={index}
           onClick={() => selectItem(index)}
         >
+          {item.icon}
           {item.element || item.title}
         </button>
       ))}
