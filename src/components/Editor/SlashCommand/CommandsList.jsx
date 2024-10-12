@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+
 const CommandsList = ({ items, command }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [show, setShow] = useState(true);
 
   useEffect(() => {
     setSelectedIndex(0);
@@ -17,7 +9,7 @@ const CommandsList = ({ items, command }) => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-
+      console.log(event); // here is nothing on enter
       if (event.key === 'ArrowUp') {
         upHandler();
         event.preventDefault();
@@ -25,6 +17,7 @@ const CommandsList = ({ items, command }) => {
         downHandler();
         event.preventDefault();
       } else if (event.key === 'Enter') {
+        console.log('test');
         enterHandler();
         event.preventDefault();
       }
@@ -52,29 +45,24 @@ const CommandsList = ({ items, command }) => {
   const selectItem = (index) => {
     const item = items[index];
     if (item) {
+      console.log('Selected item:', item); // Debug log
       command(item);
     }
   };
 
   return (
-    <DropdownMenu open={show} onOpenChange={setShow}>
-      <DropdownMenuTrigger></DropdownMenuTrigger>
-      <DropdownMenuContent onOpenAutoFocus={(e) => e.preventDefault()}>
-        <DropdownMenuLabel>Turn into</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {items.map((item, index) => (
-          <DropdownMenuItem
-            className={
-              index === selectedIndex ? 'bg-accent text-accent-foreground' : ''
-            }
-            key={index}
-            onClick={() => selectItem(index)}
-          >
-            {item.element || item.title}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 shadow-md text-popover-foreground">
+      {items.map((item, index) => (
+        <button
+          className={`flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm transition-colors 
+                      ${index === selectedIndex ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/10'}`}
+          key={index}
+          onClick={() => selectItem(index)}
+        >
+          {item.element || item.title}
+        </button>
+      ))}
+    </div>
   );
 };
 

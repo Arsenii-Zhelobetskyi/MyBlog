@@ -33,9 +33,7 @@ const renderItems = () => {
     onKeyDown({event}) {
       
       if (event.key === "Escape") {
-        popup.hide();
-
-        props.editor.commands.focus();
+        popup[0].hide();
         return true;
       }
       if(event.key==="Enter"){
