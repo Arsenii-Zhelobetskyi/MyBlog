@@ -44,7 +44,8 @@ function AppLayout() {
     <div id='app' className="flex min-h-screen flex-col ">
       <Header />
       <div className="mt-20 flex-1 px-8 py-12">
-        <main className="mx-auto ">
+      <main className="mx-auto max-w-7xl">
+
           
           <Outlet />
         </main>
