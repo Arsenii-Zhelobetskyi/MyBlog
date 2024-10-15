@@ -84,11 +84,11 @@ export async function getPost(id: string | undefined) {
 export async function getPosts(
   pageSize: number,
   page?: number,
-  sortBy?: { field: string; sortType: string },
+  sortBy?: string,
   searchQuery?: { searchField: string; searchValue: string },
   filterQuery?: { filterField: string; filterValue: any },
 ) {
-  const { field, sortType } = sortBy || { field: '', sortType: '' };
+  const [field, sortType ] =sortBy?.split('-') || [undefined, undefined]; 
   const { searchField, searchValue } = searchQuery || {
     searchField: '',
     searchValue: '',

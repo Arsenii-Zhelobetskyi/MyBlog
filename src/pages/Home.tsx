@@ -9,13 +9,13 @@ function Home() {
   const { isPending: latestPending, posts: latestPosts } = usePosts(
     pageSize,
     undefined,
-    { field: 'created_at', sortType: 'desc' },
+    'created_at-desc'
   );
 
   const { isPending: popularPending, posts: popularPosts } = usePosts(
     pageSize,
     undefined,
-    { field: 'likes', sortType: 'desc' },
+    'likes-desc'
   );
   const { isPending, posts } = usePosts(pageSize);
   return (

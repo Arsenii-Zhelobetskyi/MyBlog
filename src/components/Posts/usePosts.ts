@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 export function usePosts(
   pageSize: number,
   page?: number,
-  sortBy?: { field: string; sortType: string },
+  sortBy?: string,
   searchQuery?: { searchField: string; searchValue: string },
   filterQuery: { filterField: string; filterValue: string } = {
     filterField: 'status',
@@ -15,8 +15,7 @@ export function usePosts(
     'posts',
     pageSize,
     ...(page ? [`page-${page}`] : []),
-    ...(sortBy?.field ? [sortBy.field] : []),
-    ...(sortBy?.sortType ? [sortBy.sortType] : []),
+    ...(sortBy!=='' ? [`sortBy-${sortBy}`] : []),
     ...(searchQuery?.searchValue ? [`search-${searchQuery?.searchValue}`] : []),
     ...(filterQuery?.filterField ? [`filter-${filterQuery?.filterValue}`] : []),
   ];

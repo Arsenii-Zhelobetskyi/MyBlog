@@ -6,13 +6,14 @@ import Pagination from '@/components/ui/Pagination';
 import PostStatus from '@/components/ui/PostStatus';
 import { Separator } from '@/components/ui/separator';
 import { useEffect, useState } from 'react';
-
+import SortBy from '@/components/Search/SortBy';
 const pageSize = 8;
 
 function Search() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [countState, setCountState] = useState(0);
+  const [sortBy,setSortBy]=useState('');
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
     null,
   );
@@ -25,7 +26,7 @@ function Search() {
   const { isPending, posts, count } = usePosts(
     pageSize,
     page,
-    undefined,
+    sortBy,
     { searchField: 'title', searchValue: search },
     filter,
   );
@@ -68,16 +69,21 @@ function Search() {
     setFilter(filter);
     setPage(1);
   }
+  function handleSetSortBy(sort: string) {
+    setSortBy(sort);
+    setPage(1);
+  }
 
   const pageCount = Math.ceil(countState / pageSize);
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center gap-2">
         <Input
-          className="max-w-[400px]"
+          className="max-w-[310px]"
           placeholder="Search by title..."
           onChange={(e) => handleSearch(e)}
-        />
+          />
+        <SortBy sortBy={sortBy} setSortBy={handleSetSortBy} />
       </div>
 
       {user?.isAdmin && (
