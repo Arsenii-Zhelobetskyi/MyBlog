@@ -22,7 +22,7 @@ function UpdateSettings() {
   const { logout, isPending: loggingOut } = useLogout();
   return (
     <>
-      <Sheet>
+      <Sheet >
         <SheetTrigger asChild>
           <Button variant="outline" >
             <Settings className="mr-2 h-4 w-4" />Change my settings

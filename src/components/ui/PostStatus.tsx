@@ -14,20 +14,20 @@ import { BookAudio, BookCheck, BookX } from 'lucide-react';
       | 'link';
     icon: JSX.Element;
   }[] = [
-    { label: 'Published', value: 'published', variant: 'outline',icon:<BookCheck className='mr-2 h-4 w-4'/> },
-    { label: 'On moderation', value: 'on moderation', variant: 'secondary',icon:<BookAudio className='mr-2 h-4 w-4'/> },
-    { label: 'Declined', value: 'declined', variant: 'destructive', icon:<BookX className='mr-2 h-4 w-4'/> },
+    { label: 'Published', value: 'status-published', variant: 'outline',icon:<BookCheck className='mr-2 h-4 w-4'/> },
+    { label: 'On moderation', value: 'status-on moderation', variant: 'secondary',icon:<BookAudio className='mr-2 h-4 w-4'/> },
+    { label: 'Declined', value: 'status-declined', variant: 'destructive', icon:<BookX className='mr-2 h-4 w-4'/> },
   ];
-function PostStatus({filter, setFilter}: {filter: {filterField: string, filterValue: string}, setFilter: (arg0: {filterField: string, filterValue: string}) => void}) {
+function PostStatus({filter, setFilter}: {filter:string, setFilter: (arg0: string) => void}) {
     return (
         <>
         {filterOptions.map((option) => (
           <Button
             key={option.value}
-            disabled={filter.filterValue === option.value}
+            disabled={filter === option.value}
             variant={option.variant}
             onClick={() =>
-              setFilter({ filterField: 'status', filterValue: option.value })
+              setFilter(option.value)
             }
           >
             {option.icon}

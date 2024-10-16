@@ -6,18 +6,15 @@ export function usePosts(
   page?: number,
   sortBy?: string,
   searchQuery?: { searchField: string; searchValue: string },
-  filterQuery: { filterField: string; filterValue: string } = {
-    filterField: 'status',
-    filterValue: 'published',
-  },
+  filterQuery: string = 'status-published'
 ) {
   const queryKey = [
     'posts',
     pageSize,
     ...(page ? [`page-${page}`] : []),
-    ...(sortBy!=='' ? [`sortBy-${sortBy}`] : []),
+    ...(sortBy ? [`sortBy-${sortBy}`] : []),
     ...(searchQuery?.searchValue ? [`search-${searchQuery?.searchValue}`] : []),
-    ...(filterQuery?.filterField ? [`filter-${filterQuery?.filterValue}`] : []),
+    ...(filterQuery ? [`filter-${filterQuery}`] : []),
   ];
 
   const { isPending, data, error } = useQuery({

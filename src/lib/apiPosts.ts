@@ -86,17 +86,14 @@ export async function getPosts(
   page?: number,
   sortBy?: string,
   searchQuery?: { searchField: string; searchValue: string },
-  filterQuery?: { filterField: string; filterValue: any },
+  filterQuery?: string,
 ) {
   const [field, sortType ] =sortBy?.split('-') || [undefined, undefined]; 
   const { searchField, searchValue } = searchQuery || {
     searchField: '',
     searchValue: '',
   };
-  const { filterField, filterValue } = filterQuery || {
-    filterField: '',
-    filterValue: '',
-  };
+  const [filterField,filterValue]=filterQuery?.split('-') || [undefined,undefined];
 
   let query = supabase.from('posts').select('*', { count: 'exact' });
 

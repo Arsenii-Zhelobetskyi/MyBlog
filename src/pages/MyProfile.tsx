@@ -11,11 +11,7 @@ function MyProfile() {
   const { user } = useUser();
   const [page, setPage] = useState(1);
   const [countState, setCountState] = useState(0);
-  const [filter, setFilter] = useState({
-    filterField: 'status',
-    filterValue: 'published',
-  });
-
+  const [filter, setFilter] = useState('status-published');
   const { isPending, posts, count } = usePosts(
     pageSize,
     page,
@@ -27,10 +23,7 @@ function MyProfile() {
   function handleSetPage(event: { selected: number }) {
     setPage(event.selected + 1);
   }
-  function handleSetFilter(filter: {
-    filterField: string;
-    filterValue: string;
-  }) {
+  function handleSetFilter(filter: string) {
     setFilter(filter);
     setPage(1);
   }

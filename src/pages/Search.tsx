@@ -17,10 +17,7 @@ function Search() {
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
     null,
   );
-  const [filter, setFilter] = useState({
-    filterField: 'status',
-    filterValue: 'published',
-  });
+  const [filter, setFilter] = useState('status-published');
   const { user } = useUser();
 
   const { isPending, posts, count } = usePosts(
@@ -62,10 +59,7 @@ function Search() {
   function handleSetPage(event: { selected: number }) {
     setPage(event.selected + 1);
   }
-  function handleSetFilter(filter: {
-    filterField: string;
-    filterValue: string;
-  }) {
+  function handleSetFilter(filter: string) {
     setFilter(filter);
     setPage(1);
   }
